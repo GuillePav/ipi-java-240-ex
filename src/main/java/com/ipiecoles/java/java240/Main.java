@@ -1,28 +1,49 @@
 package com.ipiecoles.java.java240;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        ProduitManager pm = new ProduitManager();
-        //Optimisation de code : un seul BitcoinService créé (un qui gère le cache et un autre sans cache) :
+
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
+
+        ProduitManager pm = ctx.getBean(ProduitManager.class);
+        //ProduitManager pm = new ProduitManager();
+        /*
+        Optimisation de code : un seul BitcoinService créé (un qui gère le cache et un autre sans cache) :
         BitcoinService bitcoinServiceWithCache = new BitcoinService();
         bitcoinServiceWithCache.setForceRefresh(false);
+        */
 
+        /*
+        BitcoinService bitcoinServiceWithoutCache = ctx.getBean(BitcoinService.class);
+        Est équivalent à (s'il n'y a qu'un bean --> quand on a bitcoinServiceWithCache et bitcoinServiceWithoutCache,
+        on doit utiliser la syntaxe ci-dessous) :
+        */
+        BitcoinService bitcoinServiceWithoutCache = ctx.getBean("bitcoinServiceWithoutCache", BitcoinService.class);
+        /*
         BitcoinService bitcoinServiceWithoutCache = new BitcoinService();
         bitcoinServiceWithoutCache.setForceRefresh(true);
-
-        //Optimisation du code : on crée dans le main :
+        */
+        //BitcoinService bitcoinServiceWithCache = ctx.getBean("bitcoinServiceWithCache", BitcoinService.class);
+        /*Optimisation du code : on crée dans le main :
         WebPageManager webPageManager = new WebPageManager();
+        */
+        //WebPageManager webPageManager = ctx.getBean(WebPageManager.class);
 
-        //Optimisation de code : grâce aux setters créés :
+        /*
+        Optimisation de code : grâce aux setters créés :
         pm.setBitcoinService(bitcoinServiceWithCache);
         pm.setWebPageManager(webPageManager);
+        */
 
-        bitcoinServiceWithoutCache.setWebPageManager(webPageManager);
-        bitcoinServiceWithCache.setWebPageManager(webPageManager);
+        //bitcoinServiceWithoutCache.setWebPageManager(webPageManager);
+        //bitcoinServiceWithCache.setWebPageManager(webPageManager);
 
         System.out.println("Bienvenue !");
         while(true){
