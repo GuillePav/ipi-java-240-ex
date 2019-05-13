@@ -1,5 +1,8 @@
 package com.ipiecoles.java.java240;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
 import java.io.IOException;
 
 public class BitcoinService {
@@ -12,13 +15,19 @@ public class BitcoinService {
 
     private Boolean forceRefresh = false;
 
+    @Value("${bitcoinService.apiUrl}")
+    private String apiUrl;
 
-    //Optimisation de code : grâce au setter créé :
+    @Autowired
     private WebPageManager webPageManager;
+
+    /*
+    //Optimisation de code : grâce au setter créé :
 
     public void setWebPageManager(WebPageManager webPageManager) {
         this.webPageManager = webPageManager;
     }
+    /*
 
     /**
      * Méthode qui renvoie le cours du Bitcoin
@@ -36,7 +45,7 @@ public class BitcoinService {
         //WebPageManager webPageManager = new WebPageManager();
         //--> au lieu de recréer à chaque fois, on le crée en attribut au début.
 
-        String apiResponse = webPageManager.getPageContents("https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=EUR");
+        String apiResponse = webPageManager.getPageContents(apiUrl);
         apiResponse = apiResponse.replace("{\"EUR\":","");
         apiResponse = apiResponse.replace("}","");
         rate = Double.parseDouble(apiResponse);

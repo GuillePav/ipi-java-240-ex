@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+    //dans le main, on ne peut pas faire d'autowired
 
     public static void main(String[] args) throws IOException {
 

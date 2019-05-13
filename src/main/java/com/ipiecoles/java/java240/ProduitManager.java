@@ -1,18 +1,36 @@
 package com.ipiecoles.java.java240;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Component
 public class ProduitManager {
 
     private List<Produit> produits = new ArrayList<>();
 
-    //Optimisation de code : on déclare les variables ici et on crée des setters :
+
+    //Si on a plusieurs beans, on n'utilise pas @AAutowired mais @Resource
+    @Resource(name="bitcoinServiceWithCache")
     private BitcoinService bitcoinService;
+
+    @Value("${produitManager.catalogueUrl}")
+    private String catalogUrl;
+
+    //Il fera l'injection automatique (set) avec l'autowired :
+    @Autowired
+    //(demande à spring de fournir un Bean de la classe suivante) :
     private WebPageManager webPageManager ;
 
+    /*
+    //Optimisation de code : on déclare les variables ici et on crée des setters :
     public void setBitcoinService(BitcoinService bitcoinService) {
         this.bitcoinService = bitcoinService;
     }
@@ -20,8 +38,7 @@ public class ProduitManager {
     public void setWebPageManager(WebPageManager webPageManager) {
         this.webPageManager = webPageManager;
     }
-
-
+    */
     /**
      * Méthode qui demande les caractéristiques d'un nouveau produit
      * à l'utilisateur et qui l'ajoute au catalogue
@@ -64,9 +81,13 @@ public class ProduitManager {
      * Méthode qui initialise le catalogue à partir d'un fichier distant.
      * @throws IOException
      */
+
+    //Pour que l'initialisation se fasse au début quand la méthode ProduiManager est appelée
+    // (i.e, à l'instanciation du Bean) :
+    @PostConstruct
     public void initialiserCatalogue() throws IOException {
 
-        String catalogue = webPageManager.getPageContentsFromCacheIfExists("https://pjvilloud.github.io/ipi-java-240-cours/catalogue.txt");
+        String catalogue = webPageManager.getPageContentsFromCacheIfExists(catalogUrl);
         int nbProduits = 0;
         for(String line : catalogue.split("\n")){
             String[] elements = line.split(";");
