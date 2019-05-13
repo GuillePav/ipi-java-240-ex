@@ -31,13 +31,12 @@ public class SpringConfig {
         return new WebPageManager();
     }
 
-    @Bean
+    @Bean(initMethod = "initialiserCatalogue")
     public ProduitManager produitManager(){
         ProduitManager produitManager = new ProduitManager();
         produitManager.setWebPageManager(webPageManager());
         produitManager.setBitcoinService(bitcoinServiceWithCache());
-        return new ProduitManager();
+        return produitManager;
     }
-
 
 }

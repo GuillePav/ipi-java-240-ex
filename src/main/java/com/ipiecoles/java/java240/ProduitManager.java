@@ -21,9 +21,6 @@ public class ProduitManager {
         this.webPageManager = webPageManager;
     }
 
-    //Pour optimiser le code, on déclare ici (une seule instanciation)
-
-
 
     /**
      * Méthode qui demande les caractéristiques d'un nouveau produit
