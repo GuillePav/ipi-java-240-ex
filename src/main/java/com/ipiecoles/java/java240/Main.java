@@ -7,6 +7,22 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         ProduitManager pm = new ProduitManager();
+        //Optimisation de code : un seul BitcoinService créé (un qui gère le cache et un autre sans cache) :
+        BitcoinService bitcoinServiceWithCache = new BitcoinService();
+        bitcoinServiceWithCache.setForceRefresh(false);
+
+        BitcoinService bitcoinServiceWithoutCache = new BitcoinService();
+        bitcoinServiceWithoutCache.setForceRefresh(true);
+
+        //Optimisation du code : on crée dans le main :
+        WebPageManager webPageManager = new WebPageManager();
+
+        //Optimisation de code : grâce aux setters créés :
+        pm.setBitcoinService(bitcoinServiceWithCache);
+        pm.setWebPageManager(webPageManager);
+
+        bitcoinServiceWithoutCache.setWebPageManager(webPageManager);
+        bitcoinServiceWithCache.setWebPageManager(webPageManager);
 
         System.out.println("Bienvenue !");
         while(true){
@@ -22,8 +38,7 @@ public class Main {
             int saisie = scanner.nextInt();
             switch (saisie){
                 case 1:
-                    BitcoinService bitcoinService = new BitcoinService();
-                    System.out.println("1 BTC = " + bitcoinService.getBitcoinRate() + " €");
+                    System.out.println("1 BTC = " + bitcoinServiceWithoutCache.getBitcoinRate() + " €");
                     break;
                 case 2:
                     pm.ajouterProduit();
