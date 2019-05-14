@@ -12,7 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
 
-@RunWith((MockitoJUnitRunner.class))
+@RunWith(MockitoJUnitRunner.class)
 public class BitcoinServiceTest {
 
     @InjectMocks
@@ -30,7 +30,7 @@ public class BitcoinServiceTest {
         //On ne charge pas le contexte Spring, on est dans un test
         //Test mocké
         //Given
-        Mockito.when(webPageManager.getPageContents(Mockito.anyString())).thenReturn("{\"EUR\":7308.73}");
+        Mockito.when(webPageManager.getPageContents(null)).thenReturn("{\"EUR\":7308.73}");
 
         //When
         Double rate = bitcoinService.getBitcoinRate();
