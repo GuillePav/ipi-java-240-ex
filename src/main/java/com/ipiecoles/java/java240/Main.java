@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 @Component
+//Pour ne pas que le programme se lance lorsqu'on exécute les tests.
 @Profile("!test")
 public class Main implements CommandLineRunner {
 

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,9 @@ import java.util.Scanner;
 public class ProduitManager {
 
     private List<Produit> produits = new ArrayList<>();
+
+    @Autowired
+    private ProduitRepository produitRepository;
 
     @Autowired
     //Si on a plusieurs beans, on n'utilise pas @AAutowired mais @Resource
@@ -29,16 +31,6 @@ public class ProduitManager {
     //(demande à spring de fournir un Bean de la classe suivante) :
     private WebPageManager webPageManager ;
 
-    /*
-    //Optimisation de code : on déclare les variables ici et on crée des setters :
-    public void setBitcoinService(BitcoinService bitcoinService) {
-        this.bitcoinService = bitcoinService;
-    }
-
-    public void setWebPageManager(WebPageManager webPageManager) {
-        this.webPageManager = webPageManager;
-    }
-    */
     /**
      * Méthode qui demande les caractéristiques d'un nouveau produit
      * à l'utilisateur et qui l'ajoute au catalogue
@@ -94,7 +86,9 @@ public class ProduitManager {
             produits.add(new Produit(elements[0], Double.parseDouble(elements[1])));
             nbProduits++;
         }
+        produitRepository.saveAll(produits);
         System.out.println("Ajout de " + nbProduits + " produits !");
+        System.out.println("BDD : " + produitRepository.count() + " produits !");
     }
 
 }
