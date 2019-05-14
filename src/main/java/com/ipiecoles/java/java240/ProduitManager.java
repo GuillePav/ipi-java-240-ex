@@ -16,9 +16,9 @@ public class ProduitManager {
 
     private List<Produit> produits = new ArrayList<>();
 
-
+    @Autowired
     //Si on a plusieurs beans, on n'utilise pas @AAutowired mais @Resource
-    @Resource(name="bitcoinServiceWithCache")
+    //@Resource(name="bitcoinServiceWithCache")
     private BitcoinService bitcoinService;
 
     @Value("${produitManager.catalogueUrl}")

@@ -22,7 +22,7 @@ public class SpringConfig {
         return bitcoinService;
     }
 
-
+    /*
     @Bean(name="bitcoinServiceWithCache")
     public BitcoinService bitcoinServiceWithCache() {
         BitcoinService bitcoinService = new BitcoinService();
