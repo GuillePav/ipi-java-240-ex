@@ -24,6 +24,10 @@ public class Produit {
 
     private Double prixEuro;
 
+    public Produit(){
+
+    }
+
     public Produit(String intitule, Double prixEuro) {
         this.intitule = intitule;
         this.prixEuro = prixEuro;
