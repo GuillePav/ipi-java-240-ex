@@ -1,50 +1,27 @@
 package com.ipiecoles.java.java240;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Main {
-    //dans le main, on ne peut pas faire d'autowired
+@Component
+public class Main implements CommandLineRunner {
 
-    public static void main(String[] args) throws IOException {
+    @Autowired
+    private ProduitManager pm;
 
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
+    @Resource(name="bitcoinServiceWithoutCache")
+    private BitcoinService bitcoinServiceWithoutCache;
 
-        ProduitManager pm = ctx.getBean(ProduitManager.class);
-        //ProduitManager pm = new ProduitManager();
-        /*
-        Optimisation de code : un seul BitcoinService créé (un qui gère le cache et un autre sans cache) :
-        BitcoinService bitcoinServiceWithCache = new BitcoinService();
-        bitcoinServiceWithCache.setForceRefresh(false);
-        */
 
-        /*
-        BitcoinService bitcoinServiceWithoutCache = ctx.getBean(BitcoinService.class);
-        Est équivalent à (s'il n'y a qu'un bean --> quand on a bitcoinServiceWithCache et bitcoinServiceWithoutCache,
-        on doit utiliser la syntaxe ci-dessous) :
-        */
-        BitcoinService bitcoinServiceWithoutCache = ctx.getBean("bitcoinServiceWithoutCache", BitcoinService.class);
-        /*
-        BitcoinService bitcoinServiceWithoutCache = new BitcoinService();
-        bitcoinServiceWithoutCache.setForceRefresh(true);
-        */
-        //BitcoinService bitcoinServiceWithCache = ctx.getBean("bitcoinServiceWithCache", BitcoinService.class);
-        /*Optimisation du code : on crée dans le main :
-        WebPageManager webPageManager = new WebPageManager();
-        */
-        //WebPageManager webPageManager = ctx.getBean(WebPageManager.class);
-
-        /*
-        Optimisation de code : grâce aux setters créés :
-        pm.setBitcoinService(bitcoinServiceWithCache);
-        pm.setWebPageManager(webPageManager);
-        */
-
-        //bitcoinServiceWithoutCache.setWebPageManager(webPageManager);
-        //bitcoinServiceWithCache.setWebPageManager(webPageManager);
+    @Override
+    public void run(String...args) throws IOException {
 
         System.out.println("Bienvenue !");
         while(true){
